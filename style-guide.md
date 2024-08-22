@@ -13,19 +13,19 @@ The designs were created to the following widths:
 
 ### Neutral
 
-- Dark Blue (Dark Mode Elements): hsl(209, 23%, 22%)
-- Very Dark Blue (Dark Mode Background): hsl(207, 26%, 17%)
-- Very Dark Blue (Light Mode Text): hsl(200, 15%, 8%)
-- Dark Gray (Light Mode Input): hsl(0, 0%, 52%)
-- Very Light Gray (Light Mode Background): hsl(0, 0%, 98%)
-- White (Dark Mode Text & Light Mode Elements): hsl(0, 0%, 100%)
+- Dark Blue (Dark Mode Elements): hsl(209, 23%, 22%) oxford-blue-900
+- Very Dark Blue (Dark Mode Background): hsl(207, 26%, 17%) shark-950
+- Very Dark Blue (Light Mode Text): hsl(200, 15%, 8%) woodsmoke-950
+- Dark Gray (Light Mode Input): hsl(0, 0%, 52%) gray-400
+- Very Light Gray (Light Mode Background): hsl(0, 0%, 98%) gray-50
+- White (Dark Mode Text & Light Mode Elements): hsl(0, 0%, 100%) white
 
 ## Typography
 
 ### Body Copy
 
 - Homepage Items: 14px
-- Detail Page: 16px 
+- Detail Page: 16px
 
 ### Fonts
 

@@ -2,7 +2,7 @@
 
 ## TODO
 
-- [ ] Setup fonts
+- [x] Setup fonts
 - [ ] Setup color theme
 - [ ] Create API
 - [ ] Filter by region https://restcountries.com/#endpoints-region

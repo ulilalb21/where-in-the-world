@@ -1,11 +1,11 @@
 <template>
   <div class="font-[Nunito] text-woodsmoke-950 dark:text-white">
     <nav
-      class="px-4 py-8 flex flex-auto justify-between items-center bg-white dark:bg-oxford-blue-900"
+      class="px-6 py-8 flex flex-auto justify-between items-center bg-white dark:bg-oxford-blue-900"
     >
       <h2 class="font-bold tracking-wide">Where in the world?</h2>
       <div
-        class="flex items-center text-sm font-semibold"
+        class="flex items-center text-sm font-semibold cursor-pointer"
         @click="isDark = !isDark"
       >
         <UIcon

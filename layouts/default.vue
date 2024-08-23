@@ -35,6 +35,29 @@ const isDark = computed({
     colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
   },
 });
+
+useSeoMeta({
+  title: 'Where in the world? | Frontend Mentor Challenge',
+  ogTitle: 'Where in the world? | Frontend Mentor Challenge',
+  description:
+    'This is a solution to the REST Countries API with color theme switcher challenge on Frontend Mentor Frontend Mentor challenges help you improve your coding skills by building realistic projects.',
+  ogDescription:
+    'This is a solution to the REST Countries API with color theme switcher challenge on Frontend Mentor Frontend Mentor challenges help you improve your coding skills by building realistic projects.',
+});
+
+useHead({
+  title: 'Where in the world? | Frontend Mentor Challenge',
+  meta: [
+    {
+      name: 'description',
+      content:
+        'This is a solution to the REST Countries API with color theme switcher challenge on Frontend Mentor Frontend Mentor challenges help you improve your coding skills by building realistic projects.',
+    },
+  ],
+  htmlAttrs: {
+    lang: 'en',
+  },
+});
 </script>
 
 <style></style>

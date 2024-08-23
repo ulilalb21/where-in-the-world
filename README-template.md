@@ -3,12 +3,14 @@
 ## TODO
 
 - [x] Setup fonts
-- [ ] Setup color theme
-- [ ] Create API
-- [ ] Filter by region https://restcountries.com/#endpoints-region
-- [ ] All https://restcountries.com/v3.1/all
-- [ ] Filter by name https://restcountries.com/#endpoints-name
-- [ ] Data used: population, region, capital, flag, name, subregion, languages, borders, currencies, domain
+- [x] Setup color theme
+- [x] Create API
+- [x] Filter by region https://restcountries.com/#endpoints-region
+- [x] All https://restcountries.com/v3.1/all
+- [x] Filter by name https://restcountries.com/#endpoints-name
+- [x] Data used: population, region, capital, flag, name, subregion, languages, borders, currencies, domain
+- [ ] Fix initial load in home, must be sync with router
+- [ ] Fix styling, shadow, button style
 
 This is a solution to the [REST Countries API with color theme switcher challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/rest-countries-api-with-color-theme-switcher-5cacc469fec04111f7b848ca). Frontend Mentor challenges help you improve your coding skills by building realistic projects.
 

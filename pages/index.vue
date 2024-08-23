@@ -24,17 +24,18 @@
     >
       <NuxtLink
         v-for="country in countries"
-        :key="country.name"
-        :to="`/${country.alpha2Code.toLowerCase()}`"
+        :key="country.cca3"
+        :to="`/${country.cca3.toLowerCase()}`"
         class="box-shadow-xl h-[388px] cursor-pointer overflow-hidden rounded-lg bg-white dark:bg-oxford-blue-900"
       >
         <NuxtImg
           class="h-[200px] w-full object-cover"
-          :src="country.flag"
+          :src="country.flags.svg"
           loading="lazy"
+          :alt="country.flags.alt || `Flag of ${country.name.common}`"
         />
         <div class="p-7">
-          <h1 class="text-md font-bold">{{ country.name }}</h1>
+          <h1 class="text-md font-bold">{{ country.name.common }}</h1>
           <div class="mt-4 text-sm">
             <p>
               <span class="font-semibold">Population: </span>
@@ -46,7 +47,7 @@
             </p>
             <p>
               <span class="font-semibold">Capital: </span>
-              {{ country.capital }}
+              {{ country.capital[0] }}
             </p>
           </div>
         </div>
@@ -56,18 +57,18 @@
 </template>
 
 <script lang="ts" setup>
-import data from '../data.json';
-
 import { watchDebounced } from '@vueuse/core';
 
 definePageMeta({
   title: 'Where in the world?',
 });
 
-const formatter = new Intl.NumberFormat('en-US');
-const formatNumber = (num: number) => formatter.format(num);
+const {
+  data: countries,
+  status: requestStatus,
+  refresh: refreshCountries,
+} = await useFetch('/api/countries');
 
-const countries = ref(data);
 const regions = [
   [
     {
@@ -96,11 +97,18 @@ const regions = [
 const route = useRoute();
 watch(
   () => route.query,
-  () => {
+  async () => {
     if (route.query.region) {
-      countries.value = data.filter(
-        country => country.region.toLowerCase() === route.query.region,
-      );
+      try {
+        requestStatus.value = 'pending';
+        countries.value = await $fetch(
+          `/api/countries/region/${route.query.region}`,
+        );
+        requestStatus.value = 'success';
+      } catch (error) {
+        requestStatus.value = 'error';
+        console.error(error);
+      }
     }
   },
 );
@@ -120,15 +128,18 @@ watchDebounced(
 );
 watch(
   () => route.query.search,
-  () => {
+  async () => {
     if (route.query.search) {
-      countries.value = data.filter(country =>
-        country.name
-          .toLowerCase()
-          .includes((route.query.search as string).toLowerCase()),
-      );
+      try {
+        requestStatus.value = 'pending';
+        countries.value = await $fetch(`/api/countries/${route.query.search}`);
+        requestStatus.value = 'success';
+      } catch (error) {
+        requestStatus.value = 'error';
+        console.error(error);
+      }
     } else {
-      countries.value = data;
+      await refreshCountries();
     }
   },
 );

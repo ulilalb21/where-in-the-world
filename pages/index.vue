@@ -2,13 +2,13 @@
   <div class="p-6 md:container md:mx-auto">
     <div class="md:flex md:items-center md:justify-between">
       <UInput
+        v-model="searchKeyword"
         class="mb-10 md:w-1/3"
         icon="i-heroicons-magnifying-glass-20-solid"
         size="lg"
         color="white"
         :trailing="false"
         placeholder="Search for a country..."
-        v-model="searchKeyword"
       />
       <UDropdown :items="regions" class="mb-8">
         <UButton
@@ -20,15 +20,19 @@
       </UDropdown>
     </div>
     <div
-      class="flex flex-col items-center md:flex-row md:flex-wrap md:justify-between"
+      class="grid gap-x-8 gap-y-14 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
     >
       <NuxtLink
         v-for="country in countries"
         :key="country.name"
         :to="`/${country.alpha2Code.toLowerCase()}`"
-        class="box-shadow-xl mb-10 h-[380px] w-[300px] cursor-pointer overflow-hidden rounded-lg bg-white dark:bg-oxford-blue-900"
+        class="box-shadow-xl h-[388px] cursor-pointer overflow-hidden rounded-lg bg-white dark:bg-oxford-blue-900"
       >
-        <NuxtImg class="h-[200px] w-full object-cover" :src="country.flag" />
+        <NuxtImg
+          class="h-[200px] w-full object-cover"
+          :src="country.flag"
+          loading="lazy"
+        />
         <div class="p-7">
           <h1 class="text-md font-bold">{{ country.name }}</h1>
           <div class="mt-4 text-sm">
@@ -54,6 +58,8 @@
 <script lang="ts" setup>
 import data from '../data.json';
 
+import { watchDebounced } from '@vueuse/core';
+
 definePageMeta({
   title: 'Where in the world?',
 });
@@ -62,7 +68,6 @@ const formatter = new Intl.NumberFormat('en-US');
 const formatNumber = (num: number) => formatter.format(num);
 
 const countries = ref(data);
-
 const regions = [
   [
     {
@@ -100,13 +105,27 @@ watch(
   },
 );
 
+const router = useRouter();
 const searchKeyword = ref('');
-watch(
+watchDebounced(
   () => searchKeyword.value,
   () => {
     if (searchKeyword.value) {
+      router.push({ query: { search: searchKeyword.value } });
+    } else {
+      router.push({ query: {} });
+    }
+  },
+  { debounce: 1000, maxWait: 5000 },
+);
+watch(
+  () => route.query.search,
+  () => {
+    if (route.query.search) {
       countries.value = data.filter(country =>
-        country.name.toLowerCase().includes(searchKeyword.value.toLowerCase()),
+        country.name
+          .toLowerCase()
+          .includes((route.query.search as string).toLowerCase()),
       );
     } else {
       countries.value = data;

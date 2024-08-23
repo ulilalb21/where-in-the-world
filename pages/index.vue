@@ -1,6 +1,6 @@
 <template>
-  <div class="md:container md:mx-auto p-6">
-    <div class="md:flex md:justify-between md:items-center">
+  <div class="p-6 md:container md:mx-auto">
+    <div class="md:flex md:items-center md:justify-between">
       <UInput
         class="mb-10 md:w-1/3"
         icon="i-heroicons-magnifying-glass-20-solid"
@@ -8,6 +8,7 @@
         color="white"
         :trailing="false"
         placeholder="Search for a country..."
+        v-model="searchKeyword"
       />
       <UDropdown :items="regions" class="mb-8">
         <UButton
@@ -19,16 +20,17 @@
       </UDropdown>
     </div>
     <div
-      class="flex flex-col items-center md:flex-wrap md:flex-row md:justify-between"
+      class="flex flex-col items-center md:flex-row md:flex-wrap md:justify-between"
     >
-      <div
-        v-for="country in data"
-        :key="country.code"
-        class="w-[300px] h-[380px] box-shadow-md bg-white dark:bg-oxford-blue-900 mb-10 box-shadow-lg rounded-lg overflow-hidden cursor-pointer"
+      <NuxtLink
+        v-for="country in countries"
+        :key="country.name"
+        :to="`/${country.alpha2Code.toLowerCase()}`"
+        class="box-shadow-xl mb-10 h-[380px] w-[300px] cursor-pointer overflow-hidden rounded-lg bg-white dark:bg-oxford-blue-900"
       >
-        <NuxtImg class="w-full h-[200px] object-cover" :src="country.flag" />
+        <NuxtImg class="h-[200px] w-full object-cover" :src="country.flag" />
         <div class="p-7">
-          <h1 class="font-bold text-md">{{ country.name }}</h1>
+          <h1 class="text-md font-bold">{{ country.name }}</h1>
           <div class="mt-4 text-sm">
             <p>
               <span class="font-semibold">Population: </span>
@@ -44,37 +46,72 @@
             </p>
           </div>
         </div>
-      </div>
+      </NuxtLink>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import data from '../data.json';
-const formatter = new Intl.NumberFormat('en-US');
 
 definePageMeta({
   title: 'Where in the world?',
 });
+
+const formatter = new Intl.NumberFormat('en-US');
+const formatNumber = (num: number) => formatter.format(num);
+
+const countries = ref(data);
+
 const regions = [
   [
     {
       label: 'Africa',
+      to: '?region=africa',
     },
     {
       label: 'America',
+      to: '?region=americas',
     },
     {
       label: 'Asia',
+      to: '?region=asia',
     },
     {
       label: 'Europe',
+      to: '?region=europe',
     },
     {
       label: 'Oceania',
+      to: '?region=oceania',
     },
   ],
 ];
-const formatNumber = (num: number) => formatter.format(num);
+
+const route = useRoute();
+watch(
+  () => route.query,
+  () => {
+    if (route.query.region) {
+      countries.value = data.filter(
+        country => country.region.toLowerCase() === route.query.region,
+      );
+    }
+  },
+);
+
+const searchKeyword = ref('');
+watch(
+  () => searchKeyword.value,
+  () => {
+    if (searchKeyword.value) {
+      countries.value = data.filter(country =>
+        country.name.toLowerCase().includes(searchKeyword.value.toLowerCase()),
+      );
+    } else {
+      countries.value = data;
+    }
+  },
+);
 </script>
 <style></style>

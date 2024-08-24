@@ -59,16 +59,6 @@
 <script lang="ts" setup>
 import { watchDebounced } from '@vueuse/core';
 
-definePageMeta({
-  title: 'Where in the world?',
-});
-
-const {
-  data: countries,
-  status: requestStatus,
-  refresh: refreshCountries,
-} = await useFetch('/api/countries');
-
 const regions = [
   [
     {
@@ -78,6 +68,10 @@ const regions = [
     {
       label: 'America',
       to: '?region=americas',
+    },
+    {
+      label: 'Antarctic',
+      to: '?region=antarctic',
     },
     {
       label: 'Asia',
@@ -95,6 +89,26 @@ const regions = [
 ];
 
 const route = useRoute();
+
+const { data: countries, status: requestStatus } = useAsyncData(
+  'countries',
+  async () => {
+    try {
+      if (route.query.region) {
+        return await $fetch(`/api/countries/region/${route.query.region}`);
+      }
+
+      if (route.query.search) {
+        return await $fetch(`/api/countries/${route.query.search}`);
+      }
+
+      return await $fetch('/api/countries');
+    } catch (error) {
+      console.error(error);
+    }
+  },
+);
+
 watch(
   () => route.query,
   async () => {
@@ -114,7 +128,7 @@ watch(
 );
 
 const router = useRouter();
-const searchKeyword = ref('');
+const searchKeyword = ref(route.query.search || '');
 watchDebounced(
   () => searchKeyword.value,
   () => {
@@ -139,7 +153,7 @@ watch(
         console.error(error);
       }
     } else {
-      await refreshCountries();
+      await $fetch('/api/countries');
     }
   },
 );

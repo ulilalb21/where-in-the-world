@@ -2,7 +2,9 @@
   <div
     class="min-h-screen bg-gray-50 font-[Nunito] text-woodsmoke-950 dark:bg-shark-950 dark:text-white"
   >
-    <nav class="fixed z-10 h-[88px] w-full bg-white dark:bg-oxford-blue-900">
+    <nav
+      class="fixed z-10 h-[88px] w-full bg-white shadow-md dark:bg-oxford-blue-900"
+    >
       <div
         class="flex flex-auto items-center justify-between px-6 py-8 md:container md:mx-auto"
       >

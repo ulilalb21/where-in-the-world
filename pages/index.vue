@@ -3,18 +3,19 @@
     <div class="md:flex md:items-center md:justify-between">
       <UInput
         v-model="searchKeyword"
-        class="mb-10 md:w-1/3"
+        class="mb-10 shadow-md md:w-1/3"
         icon="i-heroicons-magnifying-glass-20-solid"
         size="lg"
-        color="white"
         :trailing="false"
         placeholder="Search for a country..."
+        color="white"
       />
       <UDropdown :items="regions" class="mb-8">
         <UButton
+          class="bg-white shadow-md dark:bg-oxford-blue-900"
           size="lg"
-          color="white"
-          label="Filter By Region"
+          variant="none"
+          label="Filter by Region"
           trailing-icon="i-heroicons-chevron-down-20-solid"
         />
       </UDropdown>
@@ -26,7 +27,7 @@
         v-for="country in countries"
         :key="country.cca3"
         :to="`/${country.cca3.toLowerCase()}`"
-        class="box-shadow-xl h-[388px] cursor-pointer overflow-hidden rounded-lg bg-white dark:bg-oxford-blue-900"
+        class="h-[388px] cursor-pointer overflow-hidden rounded-lg bg-white shadow-md dark:bg-oxford-blue-900"
       >
         <NuxtImg
           class="h-[200px] w-full object-cover"
